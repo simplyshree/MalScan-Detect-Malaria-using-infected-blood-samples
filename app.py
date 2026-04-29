@@ -2,69 +2,72 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
 import cv2
-import joblib
+from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
-CORS(app)  # allow frontend access
+CORS(app)
 
-# 🔥 Load your BEST trained model
-model = joblib.load("malaria_model.pkl")
+# Load trained CNN model
+model = load_model("cnn_malaria_model.h5")
 
-MODEL_NAME = "Best Model"  # update if you want (e.g., "Random Forest")
-
-# 🧠 Preprocessing
+# -----------------------------------
+# Preprocess uploaded image
+# -----------------------------------
 def preprocess(image):
     image = cv2.resize(image, (64, 64))
-    image = image.flatten() / 255.0
-    return image.reshape(1, -1)
+    image = image / 255.0
+    image = np.expand_dims(image, axis=0)
+    return image
 
-# ✅ Home route
+# -----------------------------------
+# Home route
+# -----------------------------------
 @app.route("/")
 def home():
     return "MalScan Backend Running 🚀"
 
-# 🔍 Prediction route
+# -----------------------------------
+# Prediction route
+# -----------------------------------
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
-        # Check file
         if "file" not in request.files:
-            return jsonify({"error": "No file uploaded"}), 400
+            return jsonify({"error": "No file uploaded"})
 
         file = request.files["file"]
 
-        if file.filename == "":
-            return jsonify({"error": "Empty file"}), 400
-
-        # Read image
+        # Convert image
         file_bytes = np.frombuffer(file.read(), np.uint8)
         image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
 
         if image is None:
-            return jsonify({"error": "Invalid image"}), 400
+            return jsonify({"error": "Invalid image"})
 
         # Preprocess
         processed = preprocess(image)
 
         # Prediction
-        pred = model.predict(processed)[0]
-        result = "Infected" if pred == 1 else "Uninfected"
+        prob = model.predict(processed)[0][0]
 
-        # 🔥 Confidence (if model supports it)
-        confidence = None
-        if hasattr(model, "predict_proba"):
-            confidence = float(np.max(model.predict_proba(processed)))
+        if prob > 0.5:
+            result = "Infected"
+            confidence = prob
+        else:
+            result = "Uninfected"
+            confidence = 1 - prob
 
         return jsonify({
             "prediction": result,
-            "confidence": confidence,
-            "model": MODEL_NAME
+            "confidence": round(float(confidence) * 100, 2),
+            "model": "CNN"
         })
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)})
 
-
-# ▶️ Run server
+# -----------------------------------
+# Run server
+# -----------------------------------
 if __name__ == "__main__":
     app.run(debug=True)
