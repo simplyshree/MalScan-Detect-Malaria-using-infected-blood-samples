@@ -4,22 +4,14 @@ import numpy as np
 import cv2
 from tensorflow.keras.models import load_model
 
-# =====================================
-# FLASK APP
-# =====================================
 
 app = Flask(__name__)
 CORS(app)
 
-# =====================================
-# LOAD MODEL
-# =====================================
+
 
 model = load_model("cnn_malaria_model.keras", compile=False)
 
-# =====================================
-# IMAGE PREPROCESSING
-# =====================================
 
 def preprocess(image):
     # Resize to same size used in training
@@ -36,17 +28,13 @@ def preprocess(image):
 
     return image
 
-# =====================================
-# HOME ROUTE
-# =====================================
+
 
 @app.route("/")
 def home():
     return "MalScan Backend Running 🚀"
 
-# =====================================
-# PREDICT ROUTE
-# =====================================
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -104,9 +92,6 @@ def predict():
             "error": str(e)
         })
 
-# =====================================
-# RUN SERVER
-# =====================================
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
