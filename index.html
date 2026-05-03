@@ -246,7 +246,7 @@ function uploadFile() {
 
     document.getElementById("result").innerText = "⏳ Processing...";
 
-    fetch("http://127.0.0.1:5000/predict", {
+    fetch("/predict", {
         method: "POST",
         body: formData
     })
