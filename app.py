@@ -17,13 +17,13 @@ def preprocess(image):
     # Resize to same size used in training
     image = cv2.resize(image, (64, 64))
 
-    # Convert BGR to RGB
+    
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-    # Normalize
+    
     image = image.astype("float32") / 255.0
 
-    # Add batch dimension
+    
     image = np.expand_dims(image, axis=0)
 
     return image
@@ -55,10 +55,10 @@ def predict():
                 "error": "No selected file"
             })
 
-        # Read image bytes
+        
         file_bytes = np.frombuffer(file.read(), np.uint8)
 
-        # Decode image
+        
         image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
 
         if image is None:
@@ -67,13 +67,13 @@ def predict():
                 "error": "Invalid image file"
             })
 
-        # Preprocess image
+        
         processed = preprocess(image)
 
-        # Predict
+        
         prediction = model.predict(processed, verbose=0)[0][0]
 
-        # Classify result
+        
         if prediction >= 0.5:
             result = "Infected"
             confidence = prediction

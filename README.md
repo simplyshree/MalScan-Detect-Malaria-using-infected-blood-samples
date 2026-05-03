@@ -10,7 +10,7 @@ Users can upload or drag-and-drop a blood cell image, and the system predicts wh
 
 ---
 
-# 🚀 Features
+# Features
 
 - Modern Frontend UI (HTML, CSS, JavaScript)
 - Drag & Drop Image Upload
@@ -24,7 +24,7 @@ Users can upload or drag-and-drop a blood cell image, and the system predicts wh
 
 ---
 
-# 🧠 AI Model Used
+# Model Used
 
 This project uses a **Convolutional Neural Network (CNN)** trained on malaria cell images.
 
@@ -51,12 +51,6 @@ Also available on Kaggle:
 
 https://www.kaggle.com/datasets/iarunava/cell-images-for-detecting-malaria
 
-### Dataset Details:
-
-- Total Images: **27,558**
-- Classes:
-  - Parasitized (Infected)
-  - Uninfected
 
 ---
 
