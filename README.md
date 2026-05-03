@@ -9,6 +9,7 @@ Users can upload or drag-and-drop a blood cell image, and the system predicts wh
 ✅ **Uninfected**
 
 ---
+<img width="1902" height="778" alt="image" src="https://github.com/user-attachments/assets/1c46d534-e651-426b-97fc-e619e6863db5" />
 
 # Features
 
