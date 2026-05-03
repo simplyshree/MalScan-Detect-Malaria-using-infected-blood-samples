@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
 import cv2
@@ -32,7 +32,8 @@ def preprocess(image):
 
 @app.route("/")
 def home():
-    return send_from_directory(".", "index.html")
+    return "MalScan Backend Running 🚀"
+
 
 
 
@@ -95,7 +96,5 @@ def predict():
 
 
 if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=5000, debug=True)
 
