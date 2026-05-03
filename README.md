@@ -84,8 +84,6 @@ https://www.kaggle.com/datasets/iarunava/cell-images-for-detecting-malaria
 MalScan/
 │── app.py
 │── index.html
-│── style.css
-│── script.js
 │── cnn_malaria_model.keras
 │── requirements.txt
 │── README.md
